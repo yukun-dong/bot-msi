@@ -1,6 +1,6 @@
 const config = {
   botId: process.env.BOT_ID,
-  botPassword: process.env.BOT_PASSWORD,
+  tenantId: process.env.BOT_TENANT_ID,
 };
 
 export default config;

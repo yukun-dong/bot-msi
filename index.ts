@@ -16,11 +16,20 @@ import config from "./config";
 
 // Create adapter.
 // See https://aka.ms/about-bot-adapter to learn more about adapters.
-const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
-  MicrosoftAppId: config.botId,
-  MicrosoftAppPassword: config.botPassword,
-  MicrosoftAppType: "MultiTenant",
-});
+let credentialsFactory;
+if (!process.env.BOT_TENANT_ID) {
+  credentialsFactory = new ConfigurationServiceClientCredentialFactory({
+    MicrosoftAppId: config.botId,
+    MicrosoftAppPassword: process.env.BOT_PASSWORD,
+    MicrosoftAppType: "MultiTenant",
+  });
+} else {
+  credentialsFactory = new ConfigurationServiceClientCredentialFactory({
+    MicrosoftAppId: config.botId,
+    MicrosoftAppType: "UserAssignedMsi",
+    MicrosoftAppTenantId: config.tenantId
+  });
+}
 
 const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication(
   {},
